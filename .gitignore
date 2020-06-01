@@ -1,0 +1,8 @@
+FileFixingTool/.gradle
+FileFixingTool/.idea
+FileFixingTool/build
+
+FileConverterMR/.gradle
+FileConverterMR/.idea
+FileConverterMR/build
+FileConverterMR/docker/hadoop-logs

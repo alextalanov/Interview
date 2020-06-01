@@ -1,0 +1,34 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.0.0'
+    }
+}
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '5.0.0'
+    id 'application'
+    id 'java'
+}
+
+repositories {
+    jcenter()
+}
+
+group 'com.gmail.alexandrtalan'
+version '1.0'
+
+sourceCompatibility = 1.8
+mainClassName = 'com.gmail.alexandrtalan.Tool'
+
+dependencies {
+    compile group: 'com.beust', name: 'jcommander', version: '1.71'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+}
+
+defaultTasks 'shadowJar'

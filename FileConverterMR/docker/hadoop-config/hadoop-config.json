@@ -1,0 +1,28 @@
+{
+	"core_site": {
+		"fs.defaultFS": "hdfs://namenode:9000",
+		"hadoop.http.staticuser.user": "root"
+	},
+	"hdfs_site": {
+		"dfs.namenode.http-address": "0.0.0.0:9870",
+		"dfs.blockreport.intervalMsec": "60000",
+		"dfs.encryption.key.provider.uri": "kms://http@localhost:9600/kms"
+	},
+	"yarn_site": {
+		"yarn.resourcemanager.address": "resourcemanager:12010",
+		"yarn.resourcemanager.scheduler.address": "resourcemanager:12020",
+		"yarn.resourcemanager.resource-tracker.address": "resourcemanager:12030",
+		"yarn.resourcemanager.admin.address": "resourcemanager:12040",
+		"yarn.resourcemanager.webapp.address": "resourcemanager:12050",
+		"yarn.resourcemanager.scheduler.class": "org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler",
+		"yarn.scheduler.minimum-allocation-mb": 1000,
+		"yarn.scheduler.maximum-allocation-mb": 10000,
+		"yarn.scheduler.minimum-allocation-vcores": 1,
+		"yarn.scheduler.maximum-allocation-vcores": 8,
+
+		"nodemanager.resource.cpu-vcores": 4,
+		"yarn.nodemanager.resource.memory-mb": 5000,
+		"yarn.nodemanager.vmem-pmem-ratio": 3.0,
+		"yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage": 99
+	}
+}

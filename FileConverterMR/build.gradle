@@ -1,0 +1,41 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.0.0'
+    }
+}
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '5.0.0'
+    id 'application'
+    id 'java'
+}
+
+repositories {
+    jcenter()
+}
+
+group 'com.gmail.alexandrtalan'
+version '1.0'
+
+sourceCompatibility = 1.8
+mainClassName = 'com.gmail.alexandrtalan.TsvToOrcConverter'
+
+def hadoopVersion = '2.9.2'
+
+dependencies {
+    compile group: 'org.apache.orc', name: 'orc-mapreduce', version: '1.6.2'
+    compile group: 'com.beust', name: 'jcommander', version: '1.71'
+    compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '6.1.5.Final'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+
+    compileOnly group: 'org.apache.hadoop', name: 'hadoop-common', version: hadoopVersion
+    compileOnly group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client-core', version: hadoopVersion
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+defaultTasks 'shadowJar'

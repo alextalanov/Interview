@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<configuration>
+	<property>
+		<name>dfs.namenode.http-address</name>
+		<value>0.0.0.0:9870</value>
+	</property>
+	<property>
+		<name>dfs.blockreport.intervalMsec</name>
+		<value>60000</value>
+	</property>
+	<property>
+		<name>dfs.encryption.key.provider.uri</name>
+		<value>kms://http@localhost:9600/kms</value>
+	</property>
+</configuration>

@@ -1,0 +1,132 @@
+version: "3.7"
+services:
+
+
+  namenode:
+    container_name: namenode
+    image: "docker.io/dockeralexandrtalan/hadoop"
+    entrypoint: /bin/bash entrypoint.sh --command "hdfs start namenode" --config "/usr/local/lib/hadoop-2.9.2/etc/hadoop/hadoop-config.json"
+    restart: always
+    volumes:
+      - ./hadoop-config:/usr/local/lib/hadoop-2.9.2/etc/hadoop/
+      - ./hadoop-logs:/usr/local/lib/hadoop-2.9.2/logs/
+    ports:
+      - "9870:9870"
+    networks:
+      - hadoop
+  datanode:
+    container_name: datanode1
+    image: "docker.io/dockeralexandrtalan/hadoop"
+    entrypoint: /bin/bash entrypoint.sh --command "hdfs start datanode" --config "/usr/local/lib/hadoop-2.9.2/etc/hadoop/hadoop-config.json"
+    restart: always
+    volumes:
+      - ./hadoop-config:/usr/local/lib/hadoop-2.9.2/etc/hadoop/
+      - ./hadoop-logs:/usr/local/lib/hadoop-2.9.2/logs/
+    ports:
+      - "50075:50075"
+    networks:
+      - hadoop
+    depends_on:
+      - namenode
+  datanode2:
+    container_name: datanode2
+    image: "docker.io/dockeralexandrtalan/hadoop"
+    entrypoint: /bin/bash entrypoint.sh --command "hdfs start datanode" --config "/usr/local/lib/hadoop-2.9.2/etc/hadoop/hadoop-config.json"
+    restart: always
+    volumes:
+      - ./hadoop-config:/usr/local/lib/hadoop-2.9.2/etc/hadoop/
+      - ./hadoop-logs:/usr/local/lib/hadoop-2.9.2/logs/
+    ports:
+      - "50076:50075"
+    networks:
+      - hadoop
+    depends_on:
+      - namenode
+
+
+  resourcemanager:
+    container_name: resourcemanager
+    image: "docker.io/dockeralexandrtalan/hadoop"
+    entrypoint: /bin/bash entrypoint.sh --command "yarn start resourcemanager" --config "/usr/local/lib/hadoop-2.9.2/etc/hadoop/hadoop-config.json"
+    restart: always
+    volumes:
+      - ./hadoop-config:/usr/local/lib/hadoop-2.9.2/etc/hadoop/
+      - ./hadoop-logs:/usr/local/lib/hadoop-2.9.2/logs/
+      - ../build/libs:/root/hadoop/jobs/
+      - ../src/main/resources:/root/hadoop/jobs/input
+    ports:
+      - "12050:12050"
+    networks:
+      - hadoop
+  nodemanager1:
+    container_name: nodemanager1
+    image: "docker.io/dockeralexandrtalan/hadoop"
+    entrypoint: /bin/bash entrypoint.sh --command "yarn start nodemanager" --config "/usr/local/lib/hadoop-2.9.2/etc/hadoop/hadoop-config.json"
+    restart: always
+    volumes:
+      - ./hadoop-config:/usr/local/lib/hadoop-2.9.2/etc/hadoop/
+      - ./hadoop-logs:/usr/local/lib/hadoop-2.9.2/logs/
+    ports:
+      - "8042:8042"
+    networks:
+      - hadoop
+    depends_on:
+      - resourcemanager
+  nodemanager2:
+    container_name: nodemanager2
+    image: "docker.io/dockeralexandrtalan/hadoop"
+    entrypoint: /bin/bash entrypoint.sh --command "yarn start nodemanager" --config "/usr/local/lib/hadoop-2.9.2/etc/hadoop/hadoop-config.json"
+    restart: always
+    volumes:
+      - ./hadoop-config:/usr/local/lib/hadoop-2.9.2/etc/hadoop/
+      - ./hadoop-logs:/usr/local/lib/hadoop-2.9.2/logs/
+    ports:
+      - "8043:8042"
+    networks:
+      - hadoop
+    depends_on:
+      - resourcemanager
+
+  postgres:
+    container_name: postgres
+    image: "docker.io/parrotstream/postgres:10.5"
+    ports:
+      - 5432:5432
+    networks:
+      - hadoop
+    environment:
+      POSTGRES_PASSWORD: postgres
+    privileged: true
+  zookeeper:
+    container_name: zookeeper
+    entrypoint: /bin/bash run-zookeeper.sh --myid 1
+    image: "docker.io/dockeralexandrtalan/zookeeper"
+    restart: always
+    volumes:
+      - ./zookeeper-config:/usr/local/lib/apache-zookeeper-3.5.6-bin/conf
+    ports:
+      - "2181:2181"
+    networks:
+      - hadoop
+  hive:
+    container_name: hive
+    image: "docker.io/mcapitanio/hive:latest"
+    volumes:
+      - ./hadoop-config:/opt/hadoop/etc/hadoop
+    networks:
+      - hadoop
+    depends_on:
+      - postgres
+    environment:
+      PGPASSWORD: postgres
+    ports:
+      - 10000:10000
+      - 10001:10001
+      - 10002:10002
+      - 10003:10003
+      - 9083:9083
+      - 50111:50111
+      - 9999:9999
+
+networks:
+  hadoop:
