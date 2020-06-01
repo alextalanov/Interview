@@ -1,4 +1,5 @@
 **Hadoop MR job run steps:**
+
 0. Run `./gradlew`
 1. Go to directory `cd docker`
 2. Up cluster `docker-compose up -d`
@@ -8,6 +9,7 @@
 6. Run job using `hadoop jar /root/hadoop/jobs/HadoopMR-1.0-all.jar -i /jobs/tcv_to_orc_converter/input -o /jobs/tcv_to_orc_converter/output`
 
 **Hive table creation using orc file:**
+
 0. Go to container `docker exec -it postgres bash`
 1. Run `psql -U postgres` and `create database metastore`
 2. Go to container `docker exec -it hive bash`
